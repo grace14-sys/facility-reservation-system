@@ -9,7 +9,7 @@
 const SUPABASE_URL = "https://tvgnfshangtmeoumgyse.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_g4KSbGYOrBNURj7RZO49Jg_pP2tjISr";
 
-const configured = !SUPABASE_URL.includes("https://tvgnfshangtmeoumgyse.supabase.co") && !SUPABASE_ANON_KEY.includes("sb_publishable_g4KSbGYOrBNURj7RZO49Jg_pP2tjISr");
+const configured = !SUPABASE_URL.includes("PASTE_") && !SUPABASE_ANON_KEY.includes("PASTE_");
 const sb = configured ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 let currentUser = null;
