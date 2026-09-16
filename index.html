@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facility Reservation System</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Facility Reservation System</h1>
+      <p>Role-Based Facility Reservation and Approval System</p>
+    </div>
+    <button id="logoutBtn" class="secondary hidden">Log out</button>
+  </header>
+
+  <main class="container">
+    <section id="setupNotice" class="card warning hidden">
+      <h2>Supabase setup needed</h2>
+      <p>Open <strong>app.js</strong> and replace the two Supabase placeholders with your project URL and anon public key.</p>
+    </section>
+
+    <section id="authSection" class="auth-grid">
+      <div class="card">
+        <h2>Login</h2>
+        <form id="loginForm">
+          <label>Email<input id="loginEmail" type="email" required></label>
+          <label>Password<input id="loginPassword" type="password" required></label>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Create Requester Account</h2>
+        <form id="signupForm">
+          <label>Name<input id="signupName" required></label>
+          <label>Email<input id="signupEmail" type="email" required></label>
+          <label>Password<input id="signupPassword" type="password" minlength="6" required></label>
+          <button type="submit">Sign up</button>
+        </form>
+        <p class="hint">New accounts are created as Requesters by default.</p>
+      </div>
+    </section>
+
+    <section id="dashboard" class="hidden">
+      <div class="card userbar">
+        <div>
+          <span class="muted">Signed in as</span>
+          <strong id="userName"></strong>
+          <span id="roleBadge" class="badge"></span>
+        </div>
+      </div>
+
+      <nav class="tabs">
+        <button class="tab active" data-tab="facilitiesTab">Facilities</button>
+        <button class="tab" data-tab="reservationsTab">Reservations</button>
+        <button class="tab" data-tab="manageTab">Management</button>
+        <button class="tab" data-tab="auditTab">Audit Logs</button>
+      </nav>
+
+      <section id="facilitiesTab" class="tab-panel active">
+        <div class="card">
+          <div class="section-title">
+            <h2>Available Facilities</h2>
+            <button id="refreshFacilities" class="secondary">Refresh</button>
+          </div>
+          <div id="facilityList" class="grid"></div>
+        </div>
+      </section>
+
+      <section id="reservationsTab" class="tab-panel">
+        <div class="card" id="requestFormCard">
+          <h2>Submit Reservation</h2>
+          <form id="reservationForm" class="form-grid">
+            <label>Facility<select id="facilitySelect" required></select></label>
+            <label>Start<input id="startTime" type="datetime-local" required></label>
+            <label>End<input id="endTime" type="datetime-local" required></label>
+            <label class="full">Purpose<textarea id="purpose" required></textarea></label>
+            <button type="submit">Submit Reservation</button>
+          </form>
+        </div>
+        <div class="card">
+          <div class="section-title">
+            <h2>Reservations</h2>
+            <button id="refreshReservations" class="secondary">Refresh</button>
+          </div>
+          <div id="reservationList"></div>
+        </div>
+      </section>
+
+      <section id="manageTab" class="tab-panel">
+        <div id="adminPanel" class="card hidden">
+          <h2>Administrator Management</h2>
+          <p class="hint">Approve/reject pending requests and manage facilities.</p>
+          <div id="adminReservations"></div>
+          <hr>
+          <h3>Add Facility</h3>
+          <form id="facilityForm" class="form-grid">
+            <label>Name<input id="facilityName" required></label>
+            <label>Location<input id="facilityLocation" required></label>
+            <label>Status<select id="facilityStatus"><option>Active</option><option>Maintenance</option><option>Inactive</option></select></label>
+            <label>Condition<input id="facilityCondition" value="Good" required></label>
+            <button type="submit">Add Facility</button>
+          </form>
+        </div>
+
+        <div id="staffPanel" class="card hidden">
+          <h2>Facility Staff</h2>
+          <p class="hint">Update approved reservations and facility condition.</p>
+          <div id="staffReservations"></div>
+        </div>
+
+        <div id="noManagePanel" class="card hidden">
+          <h2>Management</h2>
+          <p>Management controls are available to Administrators and Facility Staff.</p>
+        </div>
+      </section>
+
+      <section id="auditTab" class="tab-panel">
+        <div class="card">
+          <div class="section-title">
+            <h2>Audit Logs</h2>
+            <button id="refreshAudit" class="secondary">Refresh</button>
+          </div>
+          <div id="auditList"></div>
+        </div>
+      </section>
+    </section>
+
+    <div id="message" class="message"></div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
